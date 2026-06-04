@@ -40,6 +40,11 @@ jobs:
           ref: ${{ env.UPSTREAM_SHA }}
           persist-credentials: false
 
+      - name: Bump builder Go base (go.mod@717b374 needs >=1.24.2; upstream Dockerfile pins golang:1.23 with GOTOOLCHAIN=local)
+        run: |
+          sed -i 's#golang:1.23#golang:1.24#' Dockerfile
+          grep '^FROM golang' Dockerfile
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
