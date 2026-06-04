@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cedar-tinytodo
+  labels:
+    app.kubernetes.io/part-of: chatloopbackoff-cedar
+    cedar.chatloopbackoff/act: "1"

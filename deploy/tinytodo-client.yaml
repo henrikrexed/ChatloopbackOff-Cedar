@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tinytodo-client
+  labels:
+    app.kubernetes.io/name: tinytodo-client
+    app.kubernetes.io/part-of: chatloopbackoff-cedar
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tinytodo-client
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: tinytodo-client
+    spec:
+      # The Python CLI is kept running (idle) so the operator can `kubectl exec`
+      # into it on stage and issue TinyTodo commands as different principals
+      # (kesha, aaron, ...) to show Cedar Allow/Deny decisions live.
+      containers:
+        - name: tinytodo-client
+          image: ghcr.io/henrikrexed/tinytodo-client:dev
+          env:
+            - name: TINYTODO_SERVER_URL
+              value: http://tinytodo-server:8080
+          command: ["sleep", "infinity"]
+          resources:
+            requests:
+              cpu: 25m
+              memory: 32Mi
+            limits:
+              cpu: 250m
+              memory: 128Mi

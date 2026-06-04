@@ -1,0 +1,29 @@
+# Argo CD Application for ACT 1 (TinyTodo + Cedar). Argo watches the deploy/
+# path of THIS repo and syncs it into the cedar-tinytodo namespace. On stream:
+# edit a Cedar policy -> PR -> merge -> Argo auto-syncs -> cedar-agent rolls ->
+# the decision changes live. This is the "change, PR, release, sync" beat.
+#
+# Apply of this Application is gated (board-side) on the cluster existing:
+# the cedar-webhook-certs Secret + the proxmox-clusters fix-branch merge.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cedar-tinytodo
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/henrikrexed/ChatloopbackOff-Cedar.git
+    targetRevision: main
+    path: deploy
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cedar-tinytodo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
