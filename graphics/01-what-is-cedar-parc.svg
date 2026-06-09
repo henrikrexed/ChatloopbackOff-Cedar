@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" role="img" aria-label="What is Cedar — the PARC authorization model: Principal, Action, Resource, Context resolve to one Allow or Deny decision">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0B1220"/>
+      <stop offset="100%" stop-color="#142036"/>
+    </linearGradient>
+    <linearGradient id="allow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#36C5B0"/>
+      <stop offset="100%" stop-color="#1E8E84"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#F5A623"/>
+    </marker>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+
+  <!-- title -->
+  <text x="120" y="108" font-family="Inter, sans-serif" font-weight="900" font-size="56" fill="#E8ECF2">What is Cedar?</text>
+  <text x="120" y="156" font-family="Inter, sans-serif" font-size="26" fill="#9AB0BD">Every authorization question is the same four-part tuple: <tspan font-weight="800" fill="#36C5B0">P A R C</tspan></text>
+
+  <!-- four PARC cards -->
+  <!-- Principal -->
+  <g transform="translate(120 240)">
+    <rect width="380" height="230" rx="16" fill="#1C2738" stroke="#36C5B0" stroke-width="2.5"/>
+    <text x="32" y="64" font-family="JetBrains Mono, monospace" font-weight="800" font-size="30" fill="#36C5B0">principal</text>
+    <text x="32" y="108" font-family="Inter, sans-serif" font-weight="800" font-size="30" fill="#E8ECF2">WHO</text>
+    <text x="32" y="150" font-family="Inter, sans-serif" font-size="22" fill="#9AB0BD">is making the request?</text>
+    <text x="32" y="196" font-family="JetBrains Mono, monospace" font-size="18" fill="#C7D6DF">ServiceAccount "deploy-bot"</text>
+  </g>
+  <!-- Action -->
+  <g transform="translate(540 240)">
+    <rect width="380" height="230" rx="16" fill="#1C2738" stroke="#36C5B0" stroke-width="2.5"/>
+    <text x="32" y="64" font-family="JetBrains Mono, monospace" font-weight="800" font-size="30" fill="#36C5B0">action</text>
+    <text x="32" y="108" font-family="Inter, sans-serif" font-weight="800" font-size="30" fill="#E8ECF2">WHAT</text>
+    <text x="32" y="150" font-family="Inter, sans-serif" font-size="22" fill="#9AB0BD">do they want to do?</text>
+    <text x="32" y="196" font-family="JetBrains Mono, monospace" font-size="18" fill="#C7D6DF">k8s::Action::"create"</text>
+  </g>
+  <!-- Resource -->
+  <g transform="translate(960 240)">
+    <rect width="380" height="230" rx="16" fill="#1C2738" stroke="#36C5B0" stroke-width="2.5"/>
+    <text x="32" y="64" font-family="JetBrains Mono, monospace" font-weight="800" font-size="30" fill="#36C5B0">resource</text>
+    <text x="32" y="108" font-family="Inter, sans-serif" font-weight="800" font-size="30" fill="#E8ECF2">ON WHAT</text>
+    <text x="32" y="150" font-family="Inter, sans-serif" font-size="22" fill="#9AB0BD">is it being done?</text>
+    <text x="32" y="196" font-family="JetBrains Mono, monospace" font-size="18" fill="#C7D6DF">Deployment in "prod"</text>
+  </g>
+  <!-- Context -->
+  <g transform="translate(1380 240)">
+    <rect width="380" height="230" rx="16" fill="#1C2738" stroke="#36C5B0" stroke-width="2.5"/>
+    <text x="32" y="64" font-family="JetBrains Mono, monospace" font-weight="800" font-size="30" fill="#36C5B0">context</text>
+    <text x="32" y="108" font-family="Inter, sans-serif" font-weight="800" font-size="30" fill="#E8ECF2">UNDER WHICH</text>
+    <text x="32" y="150" font-family="Inter, sans-serif" font-size="22" fill="#9AB0BD">conditions?</text>
+    <text x="32" y="196" font-family="JetBrains Mono, monospace" font-size="18" fill="#C7D6DF">labels, time, mTLS&#8230;</text>
+  </g>
+
+  <!-- arrows down to engine -->
+  <g stroke="#F5A623" stroke-width="3" fill="none" marker-end="url(#arrow)">
+    <line x1="310" y1="470" x2="760" y2="556"/>
+    <line x1="730" y1="470" x2="850" y2="556"/>
+    <line x1="1150" y1="470" x2="1070" y2="556"/>
+    <line x1="1570" y1="470" x2="1160" y2="556"/>
+  </g>
+
+  <!-- Cedar engine bar -->
+  <g transform="translate(660 570)">
+    <rect width="600" height="120" rx="16" fill="#0F1A2D" stroke="#36C5B0" stroke-width="3"/>
+    <text x="300" y="54" font-family="Inter, sans-serif" font-weight="900" font-size="32" fill="#E8ECF2" text-anchor="middle">Cedar policy engine</text>
+    <text x="300" y="92" font-family="Inter, sans-serif" font-size="20" fill="#9AB0BD" text-anchor="middle">evaluates every <tspan font-family="JetBrains Mono, monospace" fill="#36C5B0">permit</tspan> / <tspan font-family="JetBrains Mono, monospace" fill="#FF6B6B">forbid</tspan> rule &#183; deny trumps allow</text>
+  </g>
+
+  <!-- arrow engine -> decision -->
+  <g stroke="#F5A623" stroke-width="4" fill="none" marker-end="url(#arrow)">
+    <line x1="960" y1="690" x2="960" y2="770"/>
+  </g>
+
+  <!-- decision row -->
+  <g transform="translate(560 786)">
+    <rect width="380" height="150" rx="16" fill="url(#allow)"/>
+    <text x="190" y="66" font-family="Inter, sans-serif" font-weight="900" font-size="40" fill="#0B1220" text-anchor="middle">ALLOW</text>
+    <text x="190" y="110" font-family="Inter, sans-serif" font-size="20" fill="#0B1220" text-anchor="middle">a matching permit, no forbid</text>
+  </g>
+  <g transform="translate(980 786)">
+    <rect width="380" height="150" rx="16" fill="#1C2738" stroke="#FF6B6B" stroke-width="3"/>
+    <text x="190" y="66" font-family="Inter, sans-serif" font-weight="900" font-size="40" fill="#FF6B6B" text-anchor="middle">DENY</text>
+    <text x="190" y="110" font-family="Inter, sans-serif" font-size="20" fill="#9AB0BD" text-anchor="middle">default, or any forbid matches</text>
+  </g>
+
+  <!-- footnote -->
+  <text x="120" y="1000" font-family="Inter, sans-serif" font-size="22" fill="#9AB0BD">Not Turing-complete by design &#8594; every policy is <tspan font-weight="800" fill="#E8ECF2">analyzable</tspan>. Formally verified against a Lean model.</text>
+  <text x="1800" y="1030" font-family="Inter, sans-serif" font-size="18" fill="#6E8493" text-anchor="end">Source: ISI-1085 §1 &#183; isitobservable.com</text>
+</svg>
