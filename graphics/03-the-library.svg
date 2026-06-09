@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" role="img" aria-label="Cedar the library: policy text plus entities and request data go into the Cedar engine, which returns a decision plus diagnostics. A small, embeddable, formally verified authorization library.">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0B1220"/>
+      <stop offset="100%" stop-color="#142036"/>
+    </linearGradient>
+    <linearGradient id="engine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#36C5B0"/>
+      <stop offset="100%" stop-color="#1E8E84"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#F5A623"/>
+    </marker>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+
+  <text x="120" y="100" font-family="Inter, sans-serif" font-weight="900" font-size="52" fill="#E8ECF2">Cedar, the library</text>
+  <text x="120" y="146" font-family="Inter, sans-serif" font-size="24" fill="#9AB0BD">Before it is a webhook, Cedar is a small embeddable engine: give it the rules and the facts, get back a decision.</text>
+
+  <!-- INPUT: policy text -->
+  <g transform="translate(120 260)">
+    <rect width="430" height="240" rx="14" fill="#1C2738" stroke="#36C5B0" stroke-width="2.5"/>
+    <text x="28" y="50" font-family="Inter, sans-serif" font-weight="800" font-size="24" fill="#E8ECF2">Policy text</text>
+    <text x="28" y="78" font-family="Inter, sans-serif" font-size="16" fill="#9AB0BD">human-readable .cedar rules</text>
+    <line x1="28" y1="96" x2="402" y2="96" stroke="#36C5B0" stroke-opacity="0.3" stroke-width="1"/>
+    <text x="28" y="128" font-family="JetBrains Mono, monospace" font-size="17" fill="#36C5B0">permit(principal, action,</text>
+    <text x="28" y="152" font-family="JetBrains Mono, monospace" font-size="17" fill="#36C5B0">  resource)</text>
+    <text x="28" y="176" font-family="JetBrains Mono, monospace" font-size="17" fill="#36C5B0">when { principal.team ==</text>
+    <text x="28" y="200" font-family="JetBrains Mono, monospace" font-size="17" fill="#36C5B0">  resource.owner };</text>
+  </g>
+
+  <!-- INPUT: entities/data -->
+  <g transform="translate(120 540)">
+    <rect width="430" height="240" rx="14" fill="#1C2738" stroke="#F5A623" stroke-width="2.5"/>
+    <text x="28" y="50" font-family="Inter, sans-serif" font-weight="800" font-size="24" fill="#E8ECF2">Entities + request</text>
+    <text x="28" y="78" font-family="Inter, sans-serif" font-size="16" fill="#9AB0BD">the facts: who, what, the data</text>
+    <line x1="28" y1="96" x2="402" y2="96" stroke="#F5A623" stroke-opacity="0.3" stroke-width="1"/>
+    <text x="28" y="128" font-family="JetBrains Mono, monospace" font-size="17" fill="#FFD27A">principal: User "ada"</text>
+    <text x="28" y="152" font-family="JetBrains Mono, monospace" font-size="17" fill="#FFD27A">action:    "create"</text>
+    <text x="28" y="176" font-family="JetBrains Mono, monospace" font-size="17" fill="#FFD27A">resource:  Deployment</text>
+    <text x="28" y="200" font-family="JetBrains Mono, monospace" font-size="17" fill="#FFD27A">context:   { mtls: true }</text>
+  </g>
+
+  <!-- arrows into engine -->
+  <g stroke="#F5A623" stroke-width="4" fill="none" marker-end="url(#arrow)">
+    <path d="M550 380 C 680 380, 700 500, 800 520"/>
+    <path d="M550 660 C 680 660, 700 560, 800 540"/>
+  </g>
+
+  <!-- ENGINE -->
+  <g transform="translate(800 400)">
+    <rect width="340" height="280" rx="18" fill="url(#engine)"/>
+    <text x="170" y="118" font-family="Inter, sans-serif" font-weight="900" font-size="34" fill="#0B1220" text-anchor="middle">Cedar</text>
+    <text x="170" y="160" font-family="Inter, sans-serif" font-weight="900" font-size="34" fill="#0B1220" text-anchor="middle">engine</text>
+    <text x="170" y="206" font-family="JetBrains Mono, monospace" font-size="18" fill="#0B1220" text-anchor="middle">is_authorized()</text>
+  </g>
+
+  <!-- arrow engine -> output -->
+  <g stroke="#F5A623" stroke-width="4" fill="none" marker-end="url(#arrow)">
+    <line x1="1140" y1="540" x2="1280" y2="540"/>
+  </g>
+
+  <!-- OUTPUT: decision + diagnostics -->
+  <g transform="translate(1290 400)">
+    <rect width="500" height="280" rx="14" fill="#0F1A2D" stroke="#36C5B0" stroke-width="3"/>
+    <text x="28" y="52" font-family="Inter, sans-serif" font-weight="800" font-size="24" fill="#E8ECF2">Decision + diagnostics</text>
+    <line x1="28" y1="72" x2="472" y2="72" stroke="#36C5B0" stroke-opacity="0.3" stroke-width="1"/>
+    <text x="28" y="116" font-family="JetBrains Mono, monospace" font-size="20" fill="#36C5B0">decision: ALLOW</text>
+    <text x="28" y="150" font-family="JetBrains Mono, monospace" font-size="17" fill="#9AB0BD">reason:   [ policy0 ]</text>
+    <text x="28" y="178" font-family="JetBrains Mono, monospace" font-size="17" fill="#9AB0BD">errors:   [ ]</text>
+    <text x="28" y="224" font-family="Inter, sans-serif" font-size="17" fill="#9AB0BD">Diagnostics tell you <tspan font-weight="700" fill="#E8ECF2">which</tspan> policy</text>
+    <text x="28" y="248" font-family="Inter, sans-serif" font-size="17" fill="#9AB0BD">decided &#8212; and feed the OTel span.</text>
+  </g>
+
+  <!-- properties strip -->
+  <g transform="translate(120 850)">
+    <g transform="translate(0 0)">
+      <rect width="400" height="130" rx="12" fill="#142036" stroke="#1C2738" stroke-width="2"/>
+      <text x="24" y="50" font-family="Inter, sans-serif" font-weight="800" font-size="22" fill="#36C5B0">Small &amp; embeddable</text>
+      <text x="24" y="86" font-family="Inter, sans-serif" font-size="17" fill="#9AB0BD">Rust core, Go SDK. Link it in,</text>
+      <text x="24" y="110" font-family="Inter, sans-serif" font-size="17" fill="#9AB0BD">no service required.</text>
+    </g>
+    <g transform="translate(430 0)">
+      <rect width="400" height="130" rx="12" fill="#142036" stroke="#1C2738" stroke-width="2"/>
+      <text x="24" y="50" font-family="Inter, sans-serif" font-weight="800" font-size="22" fill="#36C5B0">Formally verified</text>
+      <text x="24" y="86" font-family="Inter, sans-serif" font-size="17" fill="#9AB0BD">Rust impl differentially tested</text>
+      <text x="24" y="110" font-family="Inter, sans-serif" font-size="17" fill="#9AB0BD">against a Lean theorem model.</text>
+    </g>
+    <g transform="translate(860 0)">
+      <rect width="400" height="130" rx="12" fill="#142036" stroke="#1C2738" stroke-width="2"/>
+      <text x="24" y="50" font-family="Inter, sans-serif" font-weight="800" font-size="22" fill="#36C5B0">CNCF Sandbox</text>
+      <text x="24" y="86" font-family="Inter, sans-serif" font-size="17" fill="#9AB0BD">Accepted 2025-10-08.</text>
+      <text x="24" y="110" font-family="Inter, sans-serif" font-size="17" fill="#9AB0BD">Apache-2.0, created by AWS.</text>
+    </g>
+  </g>
+
+  <text x="1800" y="1030" font-family="Inter, sans-serif" font-size="18" fill="#6E8493" text-anchor="end">Source: ISI-1085 §1 &#183; isitobservable.com</text>
+</svg>
