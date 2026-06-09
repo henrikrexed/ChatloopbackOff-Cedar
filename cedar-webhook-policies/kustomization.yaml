@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# cedar.k8s.aws/v1alpha1 Policy objects are CLUSTER-SCOPED (no namespace) — they
+# are read by the cedar-webhook's `crd` store and evaluated for every apiserver
+# authorization + admission request. This kustomization is intentionally SEPARATE
+# from deploy/ (ACT 1 / TinyTodo app PDP), which Argo syncs into the cedar-tinytodo
+# namespace with prune+selfHeal. Manage these cluster-scoped policies with their
+# own Argo CD Application or `kubectl apply -k cedar-webhook-policies/`.
+resources:
+  - 00-deny-deploybot-secrets.yaml
+  - 10-require-owner-label.yaml
+  - 20-namespace-isolation.yaml
