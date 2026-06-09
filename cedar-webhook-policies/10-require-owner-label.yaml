@@ -1,0 +1,42 @@
+apiVersion: cedar.k8s.aws/v1alpha1
+kind: Policy
+metadata:
+  name: require-owner-label
+  annotations:
+    cedar.k8s.aws/description: >-
+      One Cedar policy doing BOTH authorization and admission — the unified
+      policy-language beat. Members of group 'requires-labels' may only read
+      with a labelSelector owner=<name> and may only mutate resources labelled
+      owner=<name>.
+spec:
+  validation:
+    enforced: false
+  content: |
+    // AUTHORIZATION half — users in 'requires-labels' may only list/watch when
+    // they scope the query with a labelSelector owner=<their name>. RBAC cannot
+    // express a condition like this at all.
+    forbid (
+        principal is k8s::User in k8s::Group::"requires-labels",
+        action in [k8s::Action::"list", k8s::Action::"watch"],
+        resource is k8s::Resource
+    ) unless {
+        resource has labelSelector &&
+        resource.labelSelector.containsAny([
+            {"key": "owner", "operator": "=",  "values": [principal.name]},
+            {"key": "owner", "operator": "==", "values": [principal.name]},
+            {"key": "owner", "operator": "in", "values": [principal.name]}])
+    };
+
+    // ADMISSION half — the SAME Policy object also validates object content at
+    // admission time: create/update/delete only resources labelled owner=<name>.
+    // Authorization (k8s::Action) and admission (k8s::admission::Action) live in
+    // one file, one language. That is the demo's core message.
+    forbid (
+        principal is k8s::User in k8s::Group::"requires-labels",
+        action in [k8s::admission::Action::"create", k8s::admission::Action::"update", k8s::admission::Action::"delete"],
+        resource
+    ) unless {
+        resource has metadata &&
+        resource.metadata has labels &&
+        resource.metadata.labels.contains({"key": "owner", "value": principal.name})
+    };

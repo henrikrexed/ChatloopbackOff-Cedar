@@ -1,0 +1,27 @@
+apiVersion: cedar.k8s.aws/v1alpha1
+kind: Policy
+metadata:
+  name: namespace-isolation-tenants
+  annotations:
+    cedar.k8s.aws/description: >-
+      ABAC namespace isolation — a ServiceAccount in group 'tenants' may only act
+      on resources in its own namespace. Scoped to the 'tenants' group on purpose
+      so it never touches system controllers' ServiceAccounts.
+spec:
+  validation:
+    enforced: false
+  content: |
+    // ABAC / namespace isolation. SCOPED to k8s::Group::"tenants" deliberately:
+    // a blanket forbid across ALL ServiceAccounts would deny system controllers
+    // (kube-controller-manager, etc.) which legitimately act cross-namespace and
+    // would wedge the cluster — Cedar is the FIRST authorizer. Only demo tenant
+    // ServiceAccounts that you place in the 'tenants' group are confined here.
+    forbid (
+        principal is k8s::ServiceAccount in k8s::Group::"tenants",
+        action,
+        resource is k8s::Resource
+    ) when {
+        resource has namespace &&
+        resource.namespace != "" &&
+        principal.namespace != resource.namespace
+    };
