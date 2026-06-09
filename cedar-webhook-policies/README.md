@@ -42,9 +42,20 @@ The cluster bootstraps with a `directory`-store-only config plus an inert
 cluster-generated Cedar schema (matches upstream `demo/*.yaml`). Flip to `true` after
 generating this cluster's schema with upstream `cmd/schema-generator`.
 
-> ⚠️ Cedar is the **FIRST** authorizer (`Webhook(cedar) → Node → RBAC`). A broad `forbid`
-> here can deny system traffic and wedge the cluster. Every forbid in this set is scoped to a
-> named principal or demo group for that reason. Review scoping before enabling new policies.
+## Limiting `forbid` blast radius
+
+Cedar is the **FIRST** authorizer (`Webhook(cedar) → Node → RBAC`), so a broad `forbid` can
+deny system traffic and wedge the cluster. There is no global "limit forbid" switch — Cedar
+returns Deny whenever *any* `forbid` matches, NoOpinion (→ Node/RBAC) when none do. Containment
+is therefore by construction. The techniques, strongest first:
+
+1. **Bound every `forbid` to the demo namespace.** Add `resource has namespace && resource.namespace == "cedar-tinytodo"`. The forbid then *cannot* match kube-system or cluster-scoped requests — they carry a different namespace (or none) and fall through to RBAC. `00-deny-deploybot-secrets` does exactly this; it is structurally incapable of denying system traffic.
+2. **Scope to a named principal or demo group**, never a bare `forbid(principal, action, resource)`. `10-*` targets `k8s::Group::"requires-labels"`, `20-*` targets `k8s::Group::"tenants"` — system controllers are never in those groups.
+3. **Keep demo policies in the `crd` store, not the bootstrap `directory` store.** A bad `forbid` is removed instantly with `kubectl delete policy <name>` (no node access, no reboot). The directory store stays noop-only. This is the fast rollback lever.
+4. **Enable `validation.enforced: true`** once the cluster schema is generated, so a typo'd entity/attribute is rejected at `kubectl apply` instead of silently mis-evaluating.
+5. **Never forbid system principals** — exclude `system:masters`, `system:nodes`, `system:serviceaccounts:kube-system`, the kube-controller-manager/scheduler SAs. Scoping (1)+(2) achieves this implicitly.
+
+> ⚠️ Review scoping (1)+(2) on every new policy before applying it on-cluster.
 
 ## Pending board confirmation (ISI-1094)
 
