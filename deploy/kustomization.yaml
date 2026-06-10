@@ -8,11 +8,14 @@ resources:
   - tinytodo-server.yaml
   - tinytodo-client.yaml
 
-# Hash-suffixed so any edit to policies.cedar / the schema produces a new
+# Hash-suffixed so any edit to policies.json / the schema produces a new
 # ConfigMap name, which rolls the cedar-agent pod and reloads the policy.
 # This is what turns "merge a policy PR" into a live decision change on stage.
+# cedar-agent 0.2.2 loads --policies / --schema as JSON, so these are the
+# cedar-agent JSON artifacts (policies = array of {id, content}; schema =
+# Cedar JSON schema). The Cedar text itself lives in each policy "content".
 configMapGenerator:
   - name: cedar-policies
     files:
-      - cedar-policies/policies.cedar
-      - cedar-policies/tinytodo.cedarschema
+      - cedar-policies/policies.json
+      - cedar-policies/schema.cedarschema.json
