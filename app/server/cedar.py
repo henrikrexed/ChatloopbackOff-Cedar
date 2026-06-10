@@ -18,7 +18,7 @@ import urllib.error
 
 # ── Static TinyTodo principals, mirrored from upstream
 # cedar-policy/cedar-examples/tinytodo entities.json. joblevel:Long, location:String
-# match deploy/cedar-policies/tinytodo.cedarschema (entity User).
+# match deploy/cedar-policies/schema.cedarschema.json (entity User).
 USERS: dict[str, dict] = {
     "kesha": {"joblevel": 5, "location": "ABC17", "teams": ["temp"]},
     "aaron": {"joblevel": 5, "location": "ABC17", "teams": ["interns"]},

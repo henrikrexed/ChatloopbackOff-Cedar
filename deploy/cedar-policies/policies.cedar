@@ -1,56 +1,49 @@
-// TinyTodo Cedar policies — ACT 1 of the ChatLoopBackOff "Cedar on Kubernetes"
-// livestream. Loaded by cedar-agent at startup via CEDAR_AGENT_POLICIES and
-// served as the PDP for tinytodo-server (HTTP POST /v1/is_authorized).
+// TinyTodo base policies — human-editable Cedar source of truth.
 //
-// This file is the GitOps-managed artifact: a change here -> PR -> Argo CD sync
-// -> the cedar-agent pod rolls (kustomize ConfigMap hash) -> new decision live.
+// cedar-agent 0.2.2 loads its --policies file as JSON, NOT raw Cedar. So this
+// file is the source the presenter edits; `make gen` (or `python3 gen.py`)
+// regenerates the applied artifact `policies.json`. Commit both → Argo CD syncs
+// → the kustomize ConfigMap hash rolls the pod → cedar-agent reloads.
 //
-// Source: cedar-policy/cedar-examples/tinytodo@main (policies.cedar), unmodified
-// except that the on-stage demo policy (Policy 5) is intentionally left
-// commented so we can enable it live during the stream.
+// Each policy's cedar-agent id comes from the `// @id: <id>` marker above it.
+// Source: cedar-policy/cedar-examples/tinytodo.
 
-// Policy 0: Any User can create a list and see what lists they own
-permit (
-    principal,
-    action in [Action::"CreateList", Action::"GetLists"],
-    resource == Application::"TinyTodo"
-);
-
-// Policy 1: A User can perform any action on a List they own
+// @id: policy0
 permit (
   principal,
-  action,
-  resource is List
-)
-when { resource.owner == principal };
+  action in [Action::"CreateList", Action::"GetLists"],
+  resource == Application::"TinyTodo"
+);
 
-// Policy 2: A User can see a List if they are either a reader or editor
-permit (
-    principal,
-    action == Action::"GetList",
-    resource
-)
+// @id: policy1
+// NOTE: upstream TinyTodo uses `resource is List`, but the `is` operator is not
+// supported by the older cedar-policy bundled in cedar-agent 0.2.2 (it rejects it
+// at load → deny-all). Guarding on the List-only `owner` attribute is semantically
+// equivalent here: `List` is the only entity type that declares an `owner`.
+permit (principal, action, resource)
+when { resource has owner && resource.owner == principal };
+
+// @id: policy2
+permit (principal, action == Action::"GetList", resource)
 when { principal in resource.readers || principal in resource.editors };
 
-// Policy 3: A User can update a List and its tasks if they are an editor
+// @id: policy3
 permit (
-    principal,
-    action in
-        [Action::"UpdateList",
-         Action::"CreateTask",
-         Action::"UpdateTask",
-         Action::"DeleteTask"],
-    resource
+  principal,
+  action in [Action::"UpdateList", Action::"CreateTask", Action::"UpdateTask", Action::"DeleteTask"],
+  resource
 )
 when { principal in resource.editors };
 
-// ── ON-STAGE DEMO CHANGE (keep commented until the GitOps beat) ──────────────
-// Policy 5: Interns may not create new task lists. Uncomment this, open a PR,
-// merge -> Argo CD syncs -> cedar-agent reloads -> User::"aaron" (an intern)
-// is now DENIED CreateList, while non-interns still succeed.
-//
+// ===========================================================================
+// ON-STAGE BEAT — "interns may not create lists".
+// Uncomment the policy body below (leave the `// @id:` marker as-is), then run
+// `make gen` and commit. Argo CD syncs, cedar-agent reloads, and an intern
+// (User::"aaron" in Team::"interns") is DENIED CreateList while others succeed.
+// ===========================================================================
+// @id: policy5
 // forbid (
-//     principal in Team::"interns",
-//     action == Action::"CreateList",
-//     resource == Application::"TinyTodo"
+//   principal in Team::"interns",
+//   action == Action::"CreateList",
+//   resource == Application::"TinyTodo"
 // );

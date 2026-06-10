@@ -1,0 +1,18 @@
+[
+  {
+    "id": "policy0",
+    "content": "permit (principal, action in [Action::\"CreateList\", Action::\"GetLists\"], resource == Application::\"TinyTodo\");"
+  },
+  {
+    "id": "policy1",
+    "content": "permit (principal, action, resource) when { resource has owner && resource.owner == principal };"
+  },
+  {
+    "id": "policy2",
+    "content": "permit (principal, action == Action::\"GetList\", resource) when { principal in resource.readers || principal in resource.editors };"
+  },
+  {
+    "id": "policy3",
+    "content": "permit (principal, action in [Action::\"UpdateList\", Action::\"CreateTask\", Action::\"UpdateTask\", Action::\"DeleteTask\"], resource) when { principal in resource.editors };"
+  }
+]
