@@ -350,10 +350,11 @@ The TinyTodo app lives in the **`cedar-tinytodo`** namespace and is delivered by
   asks the sidecar over HTTP (`POST 127.0.0.1:8180/v1/is_authorized`). See
   [`app/`](app/) for the source.
 - The sidecar loads its **policies and schema from files** —
-  `deploy/cedar-policies/policies.cedar` and `tinytodo.cedarschema` — mounted from
-  a kustomize **ConfigMap whose name is content-hashed**. So when we change
-  `policies.cedar` and merge it, kustomize generates a new ConfigMap name → the
-  pod rolls → cedar-agent reloads with the new policy. **That is the GitOps beat.**
+  `deploy/cedar-policies/policies.json` and `schema.cedarschema.json` — mounted
+  from a kustomize **ConfigMap whose name is content-hashed**. So when we change
+  `policies.cedar`, run `make gen`, and merge it, kustomize generates a new
+  ConfigMap name → the pod rolls → cedar-agent reloads with the new policy.
+  **That is the GitOps beat.**
 - **`tinytodo-client`** — an idle pod we `kubectl exec` into to act as the demo
   principals **kesha, aaron, emina, andrew**.
 

@@ -7,7 +7,7 @@ decision is made by [Cedar](https://www.cedarpolicy.com/), evaluated by a
 
 It is **forked** from
 [`cedar-policy/cedar-examples/tinytodo`](https://github.com/cedar-policy/cedar-examples/tree/main/tinytodo):
-the data model (Users/Teams/Lists, the actions, the `tinytodo.cedarschema`) and
+the data model (Users/Teams/Lists, the actions, the Cedar schema) and
 the Python client UX are preserved. The one architectural change is the whole
 point of the demo:
 
@@ -70,8 +70,8 @@ denied — that is the tutorial's "no policy first" starting state.
 # 1. start a cedar-agent with the demo policies + schema
 docker run --rm -p 8180:8180 \
   -v "$PWD/../deploy/cedar-policies:/cedar:ro" \
-  -e CEDAR_AGENT_POLICIES=/cedar/policies.cedar \
-  -e CEDAR_AGENT_SCHEMA=/cedar/tinytodo.cedarschema \
+  -e CEDAR_AGENT_POLICIES=/cedar/policies.json \
+  -e CEDAR_AGENT_SCHEMA=/cedar/schema.cedarschema.json \
   permitio/cedar-agent:0.2.2
 
 # 2. start the server
