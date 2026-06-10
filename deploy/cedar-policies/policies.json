@@ -1,0 +1,18 @@
+[
+  {
+    "id": "policy0",
+    "content": "// Policy 0: Any User can create a list and see what lists they own\npermit (\n    principal,\n    action in [Action::\"CreateList\", Action::\"GetLists\"],\n    resource == Application::\"TinyTodo\"\n);"
+  },
+  {
+    "id": "policy1",
+    "content": "// Policy 1: A User can perform any action on a List they own.\n// NOTE: upstream uses `resource is List`; the `is` operator is unsupported by\n// the cedar-policy bundled in cedar-agent 0.2.2, so we guard on the List-only\n// `owner` attribute, which is semantically equivalent here.\npermit (\n    principal,\n    action,\n    resource\n)\nwhen { resource has owner && resource.owner == principal };"
+  },
+  {
+    "id": "policy2",
+    "content": "// Policy 2: A User can see a List if they are either a reader or editor\npermit (\n    principal,\n    action == Action::\"GetList\",\n    resource\n)\nwhen { principal in resource.readers || principal in resource.editors };"
+  },
+  {
+    "id": "policy3",
+    "content": "// Policy 3: A User can update a List and its tasks if they are an editor\npermit (\n    principal,\n    action in\n        [Action::\"UpdateList\",\n         Action::\"CreateTask\",\n         Action::\"UpdateTask\",\n         Action::\"DeleteTask\"],\n    resource\n)\nwhen { principal in resource.editors };"
+  }
+]

@@ -30,9 +30,9 @@ spec:
             - name: CEDAR_AGENT_PORT
               value: "8180"
             - name: CEDAR_AGENT_POLICIES
-              value: /cedar/policies.cedar
+              value: /cedar/policies.json
             - name: CEDAR_AGENT_SCHEMA
-              value: /cedar/tinytodo.cedarschema
+              value: /cedar/schema.cedarschema.json
           ports:
             - name: cedar-http
               containerPort: 8180
