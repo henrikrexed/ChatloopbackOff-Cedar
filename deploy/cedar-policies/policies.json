@@ -5,7 +5,7 @@
   },
   {
     "id": "policy1",
-    "content": "permit (principal, action, resource is List) when { resource.owner == principal };"
+    "content": "permit (principal, action, resource) when { resource has owner && resource.owner == principal };"
   },
   {
     "id": "policy2",

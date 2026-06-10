@@ -16,8 +16,12 @@ permit (
 );
 
 // @id: policy1
-permit (principal, action, resource is List)
-when { resource.owner == principal };
+// NOTE: upstream TinyTodo uses `resource is List`, but the `is` operator is not
+// supported by the older cedar-policy bundled in cedar-agent 0.2.2 (it rejects it
+// at load → deny-all). Guarding on the List-only `owner` attribute is semantically
+// equivalent here: `List` is the only entity type that declares an `owner`.
+permit (principal, action, resource)
+when { resource has owner && resource.owner == principal };
 
 // @id: policy2
 permit (principal, action == Action::"GetList", resource)
